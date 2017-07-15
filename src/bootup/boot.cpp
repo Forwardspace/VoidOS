@@ -1,4 +1,6 @@
 #include "../drivers/vga/simplevga.h"
+#include "../misc/memory/memfuncts.h"
+#include "../misc/strings/stringfuncts.h"
 
 void bootUp();
 
