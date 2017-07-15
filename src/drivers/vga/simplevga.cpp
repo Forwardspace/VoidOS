@@ -54,14 +54,44 @@ namespace smpvga {
 		terminal_buffer[XYToLinear(x, y)] = makeEntry(c, color);
 	}
 
-	///Prints a character and checks for row and column ends
-	void putChar(char c) {
-		putCharAt(c, terminal_color, terminal_column, terminal_row);
+	///Elder, Scrolls @note Taken from the old VoidOS project. May cause the computer to explode. Or, you know, just work...
+	///Also, commented for your pleasure
+	void scrollUpLine() {
+		//Copy 1. line to the 0., 2. to the 1. and so on
+		terminal_row = 24;
+		terminal_column = 0;
 
-		if (++terminal_column == WIDTH) {
+		//Size of all rows but the last one
+		const size_t term_max = WIDTH * HEIGHT - WIDTH;
+
+		//Loop through 24 rows
+		for (int i = 0; i < term_max; i++) {
+			terminal_buffer[i] = terminal_buffer[i + WIDTH];
+		}
+
+		//And for the last row...
+		for (int i = term_max; i < term_max + WIDTH; i++) {
+			terminal_buffer[i] = makeEntry(' ', terminal_color);
+		}
+	}
+
+	///Prints a character and checks for row and column ends as well as newlines
+	void putChar(char c) {
+		if (c == '\n') {
+			terminal_row++;
 			terminal_column = 0;
-			if (++terminal_row == HEIGHT) {
-				terminal_row = 0;
+			if (terminal_row == HEIGHT) {
+				scrollUpLine();
+			}
+		}
+		else {
+			putCharAt(c, terminal_color, terminal_column, terminal_row);
+
+			if (++terminal_column == WIDTH) {
+				terminal_column = 0;
+				if (++terminal_row == HEIGHT) {
+					scrollUpLine();
+				}
 			}
 		}
 	}

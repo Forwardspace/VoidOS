@@ -15,5 +15,5 @@ void bootUp() {
 	smpvga::init();
 
 	//Display a nice message
-	smpvga::print("Hello, OS Dev!");
+	smpvga::print("Hello, OS Developer!");
 }
