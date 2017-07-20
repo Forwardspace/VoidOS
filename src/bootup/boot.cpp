@@ -1,6 +1,7 @@
 #include "../drivers/vga/simplevga.h"
 #include "../misc/memory/memfuncts.h"
 #include "../misc/strings/stringfuncts.h"
+#include "../gdt/gdt.h"
 
 void bootUp();
 
@@ -15,6 +16,9 @@ extern "C" {
 void bootUp() {
 	//Initialize a simple VGA driver
 	smpvga::init();
+
+	//Set up a GDT
+	gdt::init();
 
 	//Display a nice message
 	smpvga::print("Hello, OS Developer!");

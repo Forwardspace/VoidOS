@@ -1,9 +1,9 @@
 # VoidOS
 A simple OS, don't expect much.
-## Version 0.0.3
+## Version 0.0.4
 (Rewritten)
 
-Added some misc. functions like memcpy, strlen, ...
+Added GDT support.
 
 ### Possible uses
 * Still none
