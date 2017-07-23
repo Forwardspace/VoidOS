@@ -1,7 +1,7 @@
 #include "../drivers/vga/simplevga.h"
-#include "../misc/memory/memfuncts.h"
-#include "../misc/strings/stringfuncts.h"
+#include "../drivers/pit/pit.h"
 #include "../gdt/gdt.h"
+#include "../idt/idt.h"
 
 void bootUp();
 
@@ -12,7 +12,7 @@ extern "C" {
 	}
 }
 
-///Initializes critical OS modules
+///Initializes OS modules
 void bootUp() {
 	//Initialize a simple VGA driver
 	smpvga::init();
@@ -20,6 +20,14 @@ void bootUp() {
 	//Set up a GDT
 	gdt::init();
 
+	//Set up an IDT
+	idt::init();
+
+	//Init the PIT timer
+	pit::init(50);
+
 	//Display a nice message
 	smpvga::print("Hello, OS Developer!");
+
+	while(true) {asm("nop");}
 }

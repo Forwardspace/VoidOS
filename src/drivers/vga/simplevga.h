@@ -23,11 +23,20 @@ namespace smpvga {
 		VGA_COLOR_WHITE = 15
 	};
 
-	static inline uint8_t makeCol(color fg, color bg);
+	extern size_t WIDTH;
+	extern size_t HEIGHT;
+
+	extern size_t terminal_row;
+	extern size_t terminal_column;
+	extern uint8_t terminal_color;
+
+	inline uint8_t makeCol(color fg, color bg) {
+		return fg | bg << 4;
+	}
 
 	static inline uint16_t makeEntry(unsigned char uc, uint8_t color);
 
-	inline static size_t XYToLinear(size_t x, size_t y);
+	inline size_t XYToLinear(size_t x, size_t y);
 
 	void clearScreen();
 

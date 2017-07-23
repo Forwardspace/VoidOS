@@ -2,5 +2,8 @@
 #include <stddef.h>
 #include <stdint.h>
 
-//Get the length of a char* str
 size_t strlen(char* str);
+
+void reverse(char* str);
+
+void itoa(int num, int base, char* buffer);

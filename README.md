@@ -1,9 +1,9 @@
 # VoidOS
 A simple OS, don't expect much.
-## Version 0.0.4
+## Version 0.0.5
 (Rewritten)
 
-Added GDT support.
+Added IDT support, some more useful functions, the PIT and a simple keyboard handler (just prints scancodes for now)
 
 ### Possible uses
 * Still none
@@ -11,6 +11,7 @@ Added GDT support.
 * Printing on screen
 * Halting
 * Scrolling (Yes, truly the pinnacle of software engineering!)
+* Now prints random characters when you press a key!
 
 ## Installation
 (You need to have a i386-elf cross compiler installed.)
@@ -22,4 +23,4 @@ Run `make all link final`. You can now burn the `voidos.iso` file to a USB drive
 Install linux and run steps for Linux.
 
 ### Mac OS X
-Install a virtual machine and Windows in it, then run steps for Windows. Also, make sure to donate at least $50, it won't work without that as I don't like Macs!
+Buy a Windows PC and see steps for Windows.

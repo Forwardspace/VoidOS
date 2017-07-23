@@ -6,4 +6,27 @@ size_t strlen(char* str) {
 	while (str[len]) {
 		len++;
 	}
+	
+	return len;
+}
+
+void reverse(char* str) {
+	for(int i = 0; i < strlen(str) / 2; i++) {
+		char temp = str[i];
+		str[i] = str[strlen(str) - i - 1];
+		str[strlen(str) - i - 1] = temp;
+	}
+}
+
+void itoa(int num, int base, char* buffer) {
+	//TODO: CHANGE TO ALLOCATION
+   	int idx = 0;
+   	while (num != 0) {
+		int digit = num % base;
+		char c = (digit <= 9) ? '0' + digit : 'A' + digit - 9;
+		buffer[idx++] = c;
+	  	num /= base;
+  }
+
+	reverse(buffer);
 }

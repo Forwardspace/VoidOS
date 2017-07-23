@@ -8,11 +8,6 @@ size_t simpleStrlen(const char* str) {
 }
 
 namespace smpvga {
-	///Make a color from two color enums
-	static inline uint8_t makeCol(color fg, color bg) {
-		return fg | bg << 4;
-	}
-
 	//Make a VGA entry using a char and an already formulated color
 	static inline uint16_t makeEntry(unsigned char uc, uint8_t color) {
 		return (uint16_t) uc | (uint16_t) color << 8;
@@ -29,7 +24,7 @@ namespace smpvga {
 	uint16_t* terminal_buffer;
 
 	///Convert X and Y coordinates into linear offset
-	inline static size_t XYToLinear(size_t x, size_t y) {
+	inline size_t XYToLinear(size_t x, size_t y) {
 		return (y * WIDTH) + x;
 	}
 
