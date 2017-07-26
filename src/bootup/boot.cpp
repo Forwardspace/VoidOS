@@ -1,7 +1,10 @@
 #include "../drivers/vga/simplevga.h"
 #include "../drivers/pit/pit.h"
+#include "../drivers/keyb/keyb.h"
 #include "../gdt/gdt.h"
 #include "../idt/idt.h"
+
+#include "../misc/heap/alloc.h"
 
 void bootUp();
 
@@ -26,8 +29,16 @@ void bootUp() {
 	//Init the PIT timer
 	pit::init(50);
 
+	//Keyboard driver
+	kb::init();
+
 	//Display a nice message
 	smpvga::print("Hello, OS Developer!");
+
+	//Just a test for the keyboard driver
+	char* c = kb::gets();
+	smpvga::print(c);
+	heap::free(c);
 
 	while(true) {asm("nop");}
 }

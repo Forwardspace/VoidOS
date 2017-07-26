@@ -2,6 +2,7 @@
 #include "../misc/strings/stringfuncts.h"
 #include "../misc/os_specific/oss.h"
 #include "../drivers/pit/pit.h"
+#include "../drivers/keyb/keyb.h"
 #include "idt.h"
 
 void screenCenter(int rowoff, int columnoff) {
@@ -21,7 +22,7 @@ extern "C" {
 
 	void ISR1CPP() {
 		uint8_t scancode = inb(0x60);
-		smpvga::putChar((char)scancode);
+		kb::handleKeypress(scancode);
 		idt::EOI(1);
 	}
 

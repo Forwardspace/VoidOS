@@ -1,9 +1,9 @@
 # VoidOS
 A simple OS, don't expect much.
-## Version 0.0.5
+##Version 0.0.6
 (Rewritten)
 
-Added IDT support, some more useful functions, the PIT and a simple keyboard handler (just prints scancodes for now)
+Added memory allocation and a working keyboard driver with getc() and gets() (there is a test in boot.cpp). Also, the cursor now moves when typing.
 
 ### Possible uses
 * Still none
@@ -14,7 +14,7 @@ Added IDT support, some more useful functions, the PIT and a simple keyboard han
 * Now prints random characters when you press a key!
 
 ## Installation
-(You need to have a i386-elf cross compiler installed.)
+(You need to have a i386-elf cross compiler installed. Also I just use absolute file paths, so you need to have the same file system and structure, have the same username etc. (preferably just be me))
 
 ### Linux
 Run `make all link final`. You can now burn the `voidos.iso` file to a USB drive or a CD, or simulate it, if you have qemu installed, by running `./simulate.sh`. Enjoy its full uselessness!

@@ -42,6 +42,8 @@ namespace smpvga {
 
 	void init();
 
+	void moveCursor(uint32_t x, uint32_t y);
+
 	void scrollUpLine();
 
 	void putCharAt(char c, uint8_t color, size_t x, size_t y);

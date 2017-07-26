@@ -1,4 +1,5 @@
 #include "simplevga.h"
+#include "../../misc/os_specific/oss.h"
 
 size_t simpleStrlen(const char* str) {
 	size_t len = 0;
@@ -42,6 +43,18 @@ namespace smpvga {
 		terminal_buffer = (uint16_t*)terminal_const_buffer;
 
 		clearScreen();
+	}
+
+	void moveCursor(uint32_t x, uint32_t y) {
+		uint16_t pos = XYToLinear(x, y);
+
+		//Low bits
+		outb(0x3D4, 0x0F);
+		outb(0x3D5, (uint8_t)(pos & 0xFF));
+		
+		//High bits
+		outb(0x3D4, 0x0E);
+		outb(0x3D5, (uint8_t)((pos >> 8) & 0xFF));
 	}
 
 	///Prints the character at a specified location with a specified color
