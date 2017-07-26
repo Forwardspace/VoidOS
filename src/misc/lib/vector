@@ -1,0 +1,107 @@
+#pragma once
+#include <stddef.h>
+#include <stdint.h>
+
+#include "../heap/alloc.h"
+#include "../memory/memfuncts.h"
+
+namespace std {
+	template<typename T>
+	class vector {
+	public:
+		//Vector from array
+		vector(T* initializer, int size);
+		//Vector from number
+		vector(int num);
+		//Vector from thin air
+		vector();
+
+		void push_back(T item);
+		uint32_t size();
+		T* data();
+
+		void resize(int size);
+
+		T operator[](int index);
+		void operator=(vector<T> vec);
+
+		bool deleteArrOnDestruct = true;
+
+		~vector();
+	private:
+		T* internalArr = NULL;
+		int locsize = 0;
+		int allocated = 0;
+	};
+
+	template<typename T>
+	vector<T>::vector(T* initializer, int lsize) {
+		internalArr = new T[lsize];
+		allocated = lsize;
+		memcpy(internalArr, initializer, lsize * sizeof(T));
+	}
+
+	template<typename T>
+	vector<T>::vector(int num) {
+		internalArr = new T[num];
+		allocated = num;
+	}
+
+	template<typename T>
+	vector<T>::vector() {
+		//Just so that we can use realloc
+		internalArr = new T[1];
+		allocated++;
+	}
+
+	template<typename T>
+	void vector<T>::push_back(T item) {
+		if (locsize >= allocated) {
+			internalArr = (T*)heap::realloc(internalArr, (allocated + 4) * sizeof(T));
+			allocated += 4;
+		}
+		internalArr[locsize] = item;
+		locsize++;
+	}
+
+	template<typename T>
+	uint32_t vector<T>::size() {
+		return locsize;
+	}
+
+	template<typename T>
+	T* vector<T>::data() {
+		return internalArr;
+	}
+
+	template<typename T>
+	void vector<T>::resize(int size) {
+		internalArr = (T*)heap::realloc(internalArr, size * sizeof(T));
+	}
+
+	template<typename T>
+	T vector<T>::operator[](int index) {
+		if (index >= locsize) {
+			return internalArr[locsize - 1];
+		}
+		else {
+			//No exception handling (yet), return last element
+			return internalArr[index];
+		}
+	}
+
+	template<typename T>
+	void vector<T>::operator=(vector<T> vec) {
+		vec.deleteArrOnDestruct = false;
+		this->internalArr = vec.internalArr;
+		this->locsize = vec.locsize;
+		this->allocated = vec.allocated;
+	}
+
+	template<typename T>
+	vector<T>::~vector() {
+		if (deleteArrOnDestruct) {
+			delete internalArr;
+		}
+	}
+}

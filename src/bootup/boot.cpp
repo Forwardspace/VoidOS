@@ -1,3 +1,4 @@
+#include "icxxabi.h"
 #include "../drivers/vga/simplevga.h"
 #include "../drivers/pit/pit.h"
 #include "../drivers/keyb/keyb.h"

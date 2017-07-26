@@ -1,6 +1,6 @@
 CFLAGS=-ffreestanding -std=c++11 -O2 -fno-exceptions -w#-Wall -Wextra
 
-GPPDIR=/home/george/Desktop/VoidOS2/VOIDCC/bin/i386-elf-g++
+GPPDIR=/home/george/Desktop/VoidOS2/VOIDCC/bin/i686-elf-g++
 
 FINOBJ=/home/george/Desktop/VoidOS2/VoidOS/finals
 

@@ -78,7 +78,8 @@ namespace heap {
 
 	void* realloc(void* p, uint16_t size) {
 		//Get the size stored in front of the data
-		uint16_t p_size = *(uint16_t*)(p - 2);
+		volatile void* vp = p;
+		volatile uint16_t p_size = *(uint16_t*)(vp - 2);
 
 		void* newptr = NULL;
 
@@ -93,7 +94,7 @@ namespace heap {
 
 			if (newptr != NULL) {
 				memcpy(newptr, p, p_size);
-				free(p);
+				//free(p);
 			}
 		}
 

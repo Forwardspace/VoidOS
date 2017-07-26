@@ -1,9 +1,9 @@
 # VoidOS
 A simple OS, don't expect much.
-##Version 0.0.7
+##Version 0.0.8a
 (Rewritten)
 
-Added module loading. Also, removed the keyboard test in boot.cpp, program your own kb::gets()!
+Added vectors.
 
 ### Possible uses
 * Still none

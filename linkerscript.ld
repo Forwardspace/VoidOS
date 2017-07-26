@@ -16,6 +16,11 @@ SECTIONS {
 		*(.rodata)
 	}
 
+	.data BLOCK(4K) : ALIGN(0x1000)
+    	{
+        	*(.data)
+   	 }
+
 	.bss BLOCK(4K) : ALIGN(4K)
 	{
 		*(COMMON)
