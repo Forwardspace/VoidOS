@@ -3,20 +3,20 @@
 #include "../drivers/keyb/keyb.h"
 #include "../gdt/gdt.h"
 #include "../idt/idt.h"
+#include "../multiboot/modload.h"
 
-#include "../misc/heap/alloc.h"
+void bootUp(uint32_t mbinfoaddr);
 
-void bootUp();
-
-/// Startup function, calls @ref bootUp to get rid of the C linkage
+/// Startup function, calls bootUp to get rid of the C linkage
 extern "C" {
-	void startUp() {
-		bootUp();
+	void startUp(uint32_t mbinfoaddr) {
+		bootUp(mbinfoaddr);
 	}
 }
 
-///Initializes OS modules
-void bootUp() {
+///Initializes basic OS parts
+void bootUp(uint32_t mbinfoaddr) {
+
 	//Initialize a simple VGA driver
 	smpvga::init();
 
@@ -29,16 +29,14 @@ void bootUp() {
 	//Init the PIT timer
 	pit::init(50);
 
-	//Keyboard driver
+	//Mods
+	mods::lookForMods(mbinfoaddr);
+
+	//Keyboard
 	kb::init();
 
 	//Display a nice message
-	smpvga::print("Hello, OS Developer!");
-
-	//Just a test for the keyboard driver
-	char* c = kb::gets();
-	smpvga::print(c);
-	heap::free(c);
+	smpvga::print("Hello, World!\n\n");
 
 	while(true) {asm("nop");}
 }

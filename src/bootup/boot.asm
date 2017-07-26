@@ -24,6 +24,8 @@ global _start:function (_start.end - _start)s
 _start:
 	mov esp, stack_top
 
+	push ebx ; Push the multiboot struct
+
 	extern startUp
 	call startUp
 

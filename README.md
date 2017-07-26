@@ -1,9 +1,9 @@
 # VoidOS
 A simple OS, don't expect much.
-##Version 0.0.6
+##Version 0.0.7
 (Rewritten)
 
-Added memory allocation and a working keyboard driver with getc() and gets() (there is a test in boot.cpp). Also, the cursor now moves when typing.
+Added module loading. Also, removed the keyboard test in boot.cpp, program your own kb::gets()!
 
 ### Possible uses
 * Still none
@@ -11,7 +11,7 @@ Added memory allocation and a working keyboard driver with getc() and gets() (th
 * Printing on screen
 * Halting
 * Scrolling (Yes, truly the pinnacle of software engineering!)
-* Now prints random characters when you press a key!
+* Now prints semi-random characters when you gets()!
 
 ## Installation
 (You need to have a i386-elf cross compiler installed. Also I just use absolute file paths, so you need to have the same file system and structure, have the same username etc. (preferably just be me))
