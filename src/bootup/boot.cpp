@@ -6,6 +6,8 @@
 #include "../idt/idt.h"
 #include "../multiboot/modload.h"
 
+#include "../misc/lib/string"
+
 void bootUp(uint32_t mbinfoaddr);
 
 /// Startup function, calls bootUp to get rid of the C linkage
@@ -35,6 +37,10 @@ void bootUp(uint32_t mbinfoaddr) {
 
 	//Keyboard
 	kb::init();
+
+	std::string s("Wow,");
+	s += " is it working?!";
+	smpvga::print(s.c_str());
 
 	//Display a nice message
 	smpvga::print("Hello, World!\n\n");

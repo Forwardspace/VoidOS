@@ -1,0 +1,163 @@
+#pragma once
+#include <stddef.h>
+#include <stdint.h>
+
+#include "../memory/memfuncts.h"
+#include "../strings/stringfuncts.h"
+#include "../../drivers/vga/simplevga.h"
+#include "../heap/alloc.h"
+
+namespace std {
+	class string {
+	public:
+		string(char* str);
+		string(int length);
+		string();
+
+		char* c_str();
+		unsigned int length();
+		string substr(int start, int len);
+		void resize(int len);
+
+		char operator[](int index);
+		string* operator+=(string str);
+		string* operator+=(char* c);
+		string operator+(string str);
+		string operator<<(string str);
+		bool operator==(string str);
+		bool operator==(char* c);
+		void operator=(string str);
+
+		~string();
+		private:
+			char* volatile internalCharP = NULL;
+			size_t internalSize = 0;
+			size_t allocated = 0;
+	};
+
+	string::string(char* str) {
+		size_t length = strlen(str);
+		internalSize = length;
+		allocated = length;
+
+		internalCharP = new char[length + 1];
+
+		memcpy(internalCharP, str, length);
+	}
+
+	string::string(int length) {
+		internalSize = length;
+		allocated = length;
+		internalCharP = new char[length + 1];
+		if (internalCharP == 0) {
+			smpvga::print("new[] failure");
+			internalCharP = 0;
+			internalSize = 0;
+			allocated = 0;
+		}
+	}
+
+	string::string() {
+		internalCharP = new char[2];
+		allocated = 2;
+		if (internalCharP == 0) {
+			smpvga::print("new[] failure");
+			internalCharP = 0;
+			internalSize = 0;
+			allocated = 0;
+		}
+	}
+
+	//Return the char*
+	char* string::c_str() {
+		return internalCharP;
+	}
+
+	//Return the size
+	unsigned int string::length() {
+		return internalSize;
+	}
+
+	char string::operator[](int index) {
+		if (index < internalSize) {
+			return internalCharP[index];
+		}
+		else {
+			return -1;
+		}
+	}
+
+	string* string::operator+=(string str) {
+		if (!(this->internalSize + str.internalSize < allocated)) {
+			internalCharP = (char*)heap::realloc(internalCharP, allocated + str.internalSize);
+			memcpy(this->internalCharP + internalSize, str.internalCharP, str.internalSize);
+			internalSize += str.internalSize;
+			allocated += str.internalSize;
+		}
+		else {
+			memcpy(this->internalCharP + internalSize, str.internalCharP, str.internalSize);
+			internalSize += str.internalSize;
+		}
+
+		return this;
+	}
+
+	string* string::operator+=(char* c) {
+		size_t s = strlen(c);
+		if (!(this->internalSize + s < allocated)) {
+			internalCharP = (char*)heap::realloc(internalCharP, allocated + s);
+			memcpy(this->internalCharP + internalSize, c, s);
+			internalSize += s;
+			allocated += s;
+		}
+		else {
+			memcpy(this->internalCharP + internalSize, c, s);
+			internalSize += s;
+		}
+
+		return this;
+	}
+
+	string string::operator<<(string str) {
+		return str;
+	}
+
+	bool string::operator==(string str) {
+		return (strcmp(internalCharP, str.internalCharP) == 0);
+	}
+
+	bool string::operator==(char* c) {
+		return (strcmp(internalCharP, c) == 0);
+	}
+
+	void string::operator=(string str) {
+		internalSize = str.internalSize;
+		allocated = str.allocated;
+		internalCharP = (char*)heap::realloc(internalCharP, str.internalSize);
+
+		memcpy(this->internalCharP, str.internalCharP, str.internalSize);
+	}
+
+	string string::substr(int start, int len) {
+		//Copy a part of a string into another one
+		string* s = new string;
+		delete[] s->internalCharP;
+		s->internalCharP = new char[len + 1];
+		s->internalSize = len;
+		s->allocated = len;
+
+		memcpy(s->internalCharP, internalCharP + start, len);
+
+		return *s;
+	}
+
+	void string::resize(int len) {
+		internalCharP = (char*)heap::realloc(internalCharP, len);
+		internalSize = len;
+		allocated = len;
+	}
+
+	string::~string() {
+		//delete[] internalCharP;
+	}
+}
