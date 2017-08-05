@@ -1,15 +1,32 @@
 #include "alloc.h"
 #include "../memory/memfuncts.h"
+#include "../../drivers/vga/simplevga.h"
+#include "../lib/vector"
+
+extern uint32_t startprog;
+extern uint32_t endprog;
 
 namespace heap {
-	uint32_t start = 10/*MB*/ * 1000/*kB*/ * 1000/*B*/;;
-	uint32_t end = 0xFFFFFFF0;
+	uint32_t start;
+	uint32_t end;
 
-	uint32_t mallocCounter = 0;
+	uint32_t pageMemStart;
+	uint32_t pageMemEnd;
 
-	//Allocate an size-sized block of memory
+	std::vector<uint8_t> pageVec;
+
+	void init() {
+		pageMemStart = ((uint32_t)&endprog + 0x1000) - ((uint32_t)&endprog % 0x1000); //Was: 0x1234, is: 0x2000. Was: 0x23432, is: 0x24000
+		pageMemEnd = pageMemStart + 0x1000 * 0x1000; //16 megabytes
+		start = pageMemEnd + 0x2;
+		end = 0xFFFFFF00;
+
+		pageVec.resize(0x1000);
+		memset(pageVec.data(), 0, 0x1000);
+	}
+
+	//Allocate a size-sized block of memory
 	void* malloc(uint16_t size) {
-		mallocCounter++;
 		void* addr = NULL;
 		uint32_t count = 0;
 
@@ -41,40 +58,28 @@ namespace heap {
 		return addr;
 	}
 
-	//Allocate page_num page aligned 4096 bytes wide blocks of memory
-	/* 					OUT OF ORDER
-	void* mallocPageAligned(uint32_t page_num) {
-		mallocCounter++;
-		void* addr = NULL;
-		uint32_t count = 0;
-
-		//The header is two bytes long
-		uint32_t fullsize = page_num * 4096 + 2;
-
-		for (void* curr = (void*)start; curr < (void*)end; curr++) {
-			if (*(uint16_t*)curr == 0) {
-				if (addr == NULL && !((uint32_t)addr % 4098)) {
-					addr = curr;
-				}
-				count++;
-			}
-			else {
-				curr += *(uint16_t*)curr;
-
-				count = 0;
-				addr = NULL;
-			}
-
-			if (count == fullsize) {
-				if (addr != NULL) {
-					*(uint16_t*)addr = size;
-					addr += 2;
-					break;
-				}
+	void* getPage() {
+		for (uint32_t i = 0; i < 0x1000/* pageVec's size */; i++) {
+			if (!pageVec.data()[i]) {
+				pageVec.data()[i] = 1;
+				return (void*)(i * 0x1000 + pageMemStart);
 			}
 		}
-		return addr;
-	}*/
+		smpvga::print("\nCRITICAL ERROR: out of page memory, halting.\n");
+		asm("cli; hlt");
+	}
+
+	void freePage(void* p) {
+		pageVec.data()[(uint32_t)(p - pageMemStart) / 0x1000] = 0;
+	}
+
+	void* pageAlloc(uint32_t num_pages) {
+		void* p = getPage();
+		for (int i = 0; i < num_pages - 1; i++) {
+			getPage();
+		}
+		return p;
+	}
 
 	void* realloc(void* p, uint16_t size) {
 		//Get the size stored in front of the data

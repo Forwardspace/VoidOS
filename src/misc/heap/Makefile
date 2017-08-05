@@ -1,4 +1,4 @@
-CFLAGS=-ffreestanding -std=c++11 -O2 -w#-Wall -Wextra
+CFLAGS=-ffreestanding -std=c++11 -O0 -w#-Wall -Wextra
 
 GPPDIR=/home/george/Desktop/VoidOS2/VOIDCC/bin/i686-elf-g++
 
