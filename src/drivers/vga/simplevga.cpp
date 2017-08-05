@@ -9,11 +9,6 @@ size_t simpleStrlen(const char* str) {
 }
 
 namespace smpvga {
-	//Make a VGA entry using a char and an already formulated color
-	static inline uint16_t makeEntry(unsigned char uc, uint8_t color) {
-		return (uint16_t) uc | (uint16_t) color << 8;
-	}
-
 	size_t WIDTH = 80;
 	size_t HEIGHT = 25;
 
@@ -21,7 +16,7 @@ namespace smpvga {
 	size_t terminal_column = 0;
 	uint8_t terminal_color = 7; //Color code for light-gray-on-black
 
-	const uint16_t* terminal_const_buffer = (uint16_t*)0xB8000;
+	uint16_t* terminal_const_buffer = (uint16_t*)0xB8000;
 	uint16_t* terminal_buffer;
 
 	///Convert X and Y coordinates into linear offset

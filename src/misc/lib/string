@@ -27,6 +27,7 @@ namespace std {
 		bool operator==(string str);
 		bool operator==(char* c);
 		void operator=(string str);
+		void operator=(char* c);
 
 		~string();
 		private:
@@ -138,6 +139,14 @@ namespace std {
 		memcpy(this->internalCharP, str.internalCharP, str.internalSize);
 	}
 
+	void string::operator=(char* c) {
+		internalSize = strlen(c);
+		allocated = internalSize + 1;
+		internalCharP = (char*)heap::realloc(internalCharP, internalSize + 1);
+
+		memcpy(internalCharP, c, internalSize);
+	}
+
 	string string::substr(int start, int len) {
 		//Copy a part of a string into another one
 		string* s = new string;
@@ -158,6 +167,6 @@ namespace std {
 	}
 
 	string::~string() {
-		//delete[] internalCharP;
+		delete[] internalCharP;
 	}
 }

@@ -7,6 +7,7 @@ SECTIONS {
 	/* Multiboot and text section */
 	.text BLOCK(4K) : ALIGN(4K)
 	{
+		startprog = .;
 		*(.multiboot)
 		*(.text)
 	}
@@ -25,5 +26,8 @@ SECTIONS {
 	{
 		*(COMMON)
 		*(.bss)
+		endprog = .;
 	}
+
+	
 }

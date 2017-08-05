@@ -1,15 +1,14 @@
 # VoidOS
 A simple OS, don't expect much.
-## Version 0.0.8b
+## Version 0.0.9
 (Rewritten)
 
-Added strings.
+Added page allocation (heap::getPage() and heap::freePage()) and two tests for it in boot.cpp, fixed INT 13 and INT 8 ISRs. Next up: paging!
 
 ### Possible uses
 * Still none
 ### Features
 * Printing on screen
-* Halting
 * Scrolling (Yes, truly the pinnacle of software engineering!)
 * Now prints semi-random characters when you gets()!
 

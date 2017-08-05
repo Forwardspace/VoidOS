@@ -30,11 +30,15 @@ namespace smpvga {
 	extern size_t terminal_column;
 	extern uint8_t terminal_color;
 
+	extern uint16_t* terminal_const_buffer;
+
 	inline uint8_t makeCol(color fg, color bg) {
 		return fg | bg << 4;
 	}
 
-	static inline uint16_t makeEntry(unsigned char uc, uint8_t color);
+	static inline uint16_t makeEntry(unsigned char uc, uint8_t color) {
+		return (uint16_t) uc | (uint16_t) color << 8;
+	}
 
 	inline size_t XYToLinear(size_t x, size_t y);
 
