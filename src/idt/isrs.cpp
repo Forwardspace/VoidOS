@@ -64,6 +64,14 @@ extern "C" {
 		setScreenModeError();
 		printAt(smpvga::WIDTH / 2, smpvga::HEIGHT / 2 - 1, "General protection Fault AKA Generally your Fault");
 		printAt(smpvga::WIDTH / 2, smpvga::HEIGHT / 2, "Just check for NULL pointers.");
+		printAt(smpvga::WIDTH / 2, smpvga::HEIGHT / 2 + 1, "Some more info:");
+
+		if (err_code & 0x1) {
+			printAt(smpvga::WIDTH / 2, smpvga::HEIGHT / 2 + 1, "-the error code is external");
+		}
+		else {
+			printAt(smpvga::WIDTH / 2, smpvga::HEIGHT / 2 + 1, "-the error code is internal");
+		}
 
 		asm("cli; hlt");
 	}

@@ -6,6 +6,7 @@
 #include "../gdt/gdt.h"
 #include "../idt/idt.h"
 #include "../multiboot/modload.h"
+#include "../paging/page.h"
 
 extern "C" void _init();
 extern "C" void _fini();
@@ -50,19 +51,10 @@ void bootUp(uint32_t mbinfoaddr) {
 	//Keyboard
 	kb::init();
 
+	paging::init();
+
 	//Display a nice message
 	smpvga::print("Hello, World!\n\n");
-
-	volatile void* p1 = heap::getPage();
-	volatile void* p2 = heap::getPage();
-	if (p1 != p2) {
-		smpvga::print("OK");
-	}
-	heap::freePage((void*)p1);
-	p2 = heap::getPage();
-	if (p1 == p2) {
-		smpvga::print("\nOK");
-	}
 
 	while (true) {asm("nop");}
 

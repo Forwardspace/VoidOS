@@ -1,9 +1,11 @@
 # VoidOS
 A simple OS, don't expect much.
-## Version 0.0.9
-(Rewritten)
+## Version 0.0.10
 
-Added page allocation (heap::getPage() and heap::freePage()) and two tests for it in boot.cpp, fixed INT 13 and INT 8 ISRs. Next up: paging!
+(Nearing version 0.1.0)
+
+Added simple paging. (Mapped first 20 page tables, identity paging for now)  
+No int 14 handler yet, though...
 
 ### Possible uses
 * Still none
@@ -22,4 +24,4 @@ Run `make all link final`. You can now burn the `voidos.iso` file to a USB drive
 Install linux and run steps for Linux.
 
 ### Mac OS X
-Buy a Windows PC and see steps for Windows.
+Buy a Windows PC, kill your old mac with fire and see steps for Windows.

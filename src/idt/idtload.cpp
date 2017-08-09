@@ -7,6 +7,7 @@ extern "C" void ISR8ASM();
 extern "C" void ISR13ASM();
 extern "C" void ISR1ASM();
 extern "C" void ISR0ASM();
+extern "C" void ISR14ASM();
 
 #define PIC_PRIMARY_OFFSET 0x20
 #define PIC_SECONDARY_OFFSET 0x28
@@ -42,11 +43,16 @@ namespace idt {
 					defIDT[i] = getDescriptor((uint32_t)ISR1ASM, PModeTypeInt, 0);
 					break;
 				case (8 + PIC_PRIMARY_OFFSET):
+				case (8):
 					defIDT[i] = getDescriptor((uint32_t)ISR8ASM, PModeTypeInt, 0);
 					break;
-
 				case (13 + PIC_PRIMARY_OFFSET):
+				case (13):
 					defIDT[i] = getDescriptor((uint32_t)ISR13ASM, PModeTypeInt, 0);
+					break;
+				case (14 + PIC_PRIMARY_OFFSET):
+				case (14):
+					defIDT[i] = getDescriptor((uint32_t)ISR14ASM, PModeTypeInt, 0);
 					break;
 
 				default:

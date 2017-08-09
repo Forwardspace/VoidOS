@@ -1,18 +1,20 @@
 desc:
 	dd 0
 
+global switchDesc
 switchDesc:
-	mov ax, ds               ; Lower 16-bits of eax = ds.ž
+	mov ax, ds               ; Lower 16-bits of eax = ds
 	mov ebx, desc
 	mov [ebx], eax            ; save the data segment descriptor
 
-	mov ax, 0x10  			 ; load the kernel data segment descriptor
+	mov ax, 0x10  		; load the kernel data segment descriptor
 	mov ds, ax
 	mov es, ax
 	mov fs, ax
 	mov gs, ax
 	ret
 
+global restoreDesc
 restoreDesc:
 	mov eax, [desc]       	 ; reload the original data segment descriptor
 	mov ds, ax
@@ -60,7 +62,6 @@ ISR1ASM:
 extern ISR8CPP
 global ISR8ASM
 ISR8ASM:
-	hlt
 	pop eax
 	pusha
 	push eax
